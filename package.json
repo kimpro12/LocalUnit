@@ -1,0 +1,104 @@
+{
+  "name": "local-unit",
+  "displayName": "LocalUnit - AI Test Generator (Ollama Local)",
+  "description": "AI Unit Tests. Zero Cost. 100% Private. Generate unit tests using a local LLM via Ollama.",
+  "version": "0.0.1",
+  "publisher": "kim-dev",
+  "icon": "assets/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kimpro12/LocalUnit"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": ["Other", "Testing"],
+  "activationEvents": [
+    "onCommand:localunit.generateTest",
+    "onCommand:localunit.checkOllama",
+    "onCommand:localunit.activatePro"
+  ],
+  "main": "./out/extension.js",
+  "license": "MIT",
+  "contributes": {
+    "commands": [
+      {
+        "command": "localunit.generateTest",
+        "title": "LocalUnit: Generate Unit Test"
+      },
+      {
+        "command": "localunit.checkOllama",
+        "title": "LocalUnit: Check Ollama Connection"
+      },
+      {
+        "command": "localunit.activatePro",
+        "title": "LocalUnit: Activate Pro License"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "localunit.generateTest",
+          "group": "navigation",
+          "when": "editorHasSelection"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "LocalUnit",
+      "properties": {
+        "localunit.apiEndpoint": {
+          "type": "string",
+          "default": "http://localhost:11434",
+          "description": "Ollama server endpoint"
+        },
+        "localunit.model": {
+          "type": "string",
+          "default": "qwen2.5-coder",
+          "description": "Ollama model name (e.g., llama3, mistral, codellama, deepseek-coder)"
+        },
+        "localunit.temperature": {
+          "type": "number",
+          "default": 0.2,
+          "minimum": 0,
+          "maximum": 2,
+          "description": "Generation temperature (lower = more deterministic for code)"
+        },
+        "localunit.maxTokens": {
+          "type": "number",
+          "default": 600,
+          "minimum": 64,
+          "maximum": 4096,
+          "description": "Max tokens to generate (num_predict in Ollama)"
+        },
+        "localunit.stream": {
+          "type": "boolean",
+          "default": true,
+          "description": "Stream output to an Output Channel while generating"
+        },
+        "localunit.openResultInSplit": {
+          "type": "boolean",
+          "default": true,
+          "description": "Open generated test in a split editor"
+        },
+        "localunit.python.useParametrize": {
+          "type": "boolean",
+          "default": true,
+          "description": "Prefer pytest.mark.parametrize in Python tests"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "vscode:prepublish": "npm run compile",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/vscode": "^1.80.0",
+    "@vscode/vsce": "^3.6.0",
+    "typescript": "^5.6.3"
+  }
+}
